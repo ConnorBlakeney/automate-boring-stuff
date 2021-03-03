@@ -38,7 +38,6 @@ allPhoneNumbers = []
 
 for phoneNumber in extractedPhone:
     allPhoneNumbers.append(phoneNumber[0])
-print(allPhoneNumbers)
 
 results = '\n'.join(allPhoneNumbers) + '\n' + '\n'.join(extractedEmail)
 pyperclip.copy(results)
