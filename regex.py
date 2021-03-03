@@ -2,26 +2,18 @@
 
 import re, pyperclip
 
+# program that scrapes emails and phone numbers from documents
+
 # Create regex for phone numbers
-re.compile(r'''
 
-# 555-555-5555, 555-5555, (555) 555-5555, 555-5555 ext 12345, ext. 12345, x12345 
-
-((\d\d\d) | (\(\d\d\d)))? # area code (optional)
-
-(\s|-) # first separator
-
-/d/d/d# first three digits
-
-- # separator
-
-/d/d/d/d # last 4 digits
-
-((ext(\.)?\s |x) # extension word part (optional)
-
-(\d{2,5}))? # extension number part (optional)
-
-''', re.VERBOSE)
+phoneRegex = re.compile(r'''(
+    (\d{3}|\(\d{3}\))?                # area code
+    (\s|-|\.)?                        # separator
+    (\d{3})                           # first 3 digits
+    (\s|-|\.)                         # separator
+    (\d{4})                           # last 4 digits
+    (\s*(ext|x|ext.)\s*(\d{2,5}))?    # extension
+    )''', re.VERBOSE)
 
 # Regex for email
 
@@ -36,3 +28,18 @@ emailRegex = re.compile(r'''
 # get text from pyperclip clipboard
 
 text = pyperclip.paste()
+
+# extract email and phone from text
+
+extractedPhone = phoneRegex.findall(text)
+extractedEmail = emailRegex.findall(text)
+
+allPhoneNumbers = []
+
+for phoneNumber in extractedPhone:
+    allPhoneNumbers.append(phoneNumber[0])
+print(allPhoneNumbers)
+
+results = '\n'.join(allPhoneNumbers) + '\n' + '\n'.join(extractedEmail)
+pyperclip.copy(results)
+
