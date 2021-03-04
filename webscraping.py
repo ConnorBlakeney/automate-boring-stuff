@@ -1,4 +1,4 @@
-import webbrowser, sys
+import requests
 
-webbrowser.open('https://automatetheboringstuff.com')
-sys.argv
+res = requests.get('https://automatetheboringstuff.com/files/rj.txt')
+print(len(res.text))
